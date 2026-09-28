@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=
+    , initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>Titulo</h1>
+    <button>botão</button>
+    <div style=" background-color: brown;padding:20px"></div>
+
+    <form action="/pesquisar" method="POST">
+        <label for="nomeProduto">Pesquisar Produto</label>
+        
+        <!-- O atributo NAME é obrigatório para o Flask identificar este input -->
+        <input type="text" id="nomeProduto" name="nome_Produto">
+        
+        <button type="submit">Enviar</button>
+    </form>
+
+    <script src='static/js/main.js'></script>
+</body>
+</html>
