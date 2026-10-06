@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PinkMercado - Seu E-commerce Rosa</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- CABEÇALHO -->
+    <header class="header">
+        <div class="header-container">
+            <h1 class="logo">Pink<span>Mercado</span></h1>
+            
+            <form class="search-form" id="searchForm">
+                <input type="text" id="searchInput" placeholder="Buscar produtos, marcas e muito mais...">
+                <button type="submit">🔍</button>
+            </form>
+
+            <div class="cart-icon" id="cartButton">
+                🛒 <span id="cartCount">0</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- BANNER PROMOCIONAL -->
+    <section class="banner">
+        <h2>Ofertas Imperdíveis em Tons de Rosa! 💖</h2>
+    </section>
+
+    <!-- ÁREA PRINCIPAL -->
+    <main class="container">
+        <h2>Destaques para você</h2>
+        
+        <!-- O JavaScript vai injetar os 'card-produto.html' AQUI dentro -->
+        <div class="product-grid" id="productGrid"></div>
+    </main>
+
+    <!-- RODAPÉ -->
+    <footer>
+        <p>&copy; 2026 PinkMercado - Todos os direitos reservados.</p>
+    </footer>
+
+    <script src="app.js"></script>
+</body>
+</html>
