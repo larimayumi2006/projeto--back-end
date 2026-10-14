@@ -9,11 +9,11 @@ document.addEventListener('DOMContentLoaded', () => {
 async function carregarProdutos() {
     let produtos = [];
 
-    try {
+    try {//Solicita a lista de prod ao BE
         const response = await fetch(`${API_URL}/produtos`);
         if (!response.ok) throw new Error('Servidor off');
-        produtos = await response.json();
-    } catch (erro) {
+        produtos = await response.json();//converte resposta p JS
+    } catch (erro) {//motiv do erro
         console.warn('Usando produtos de teste (Mock):', erro);
         produtos = [
             { id: 1, nome: 'Fone de Ouvido Bluetooth Pink Gamer', preco: 149.90, imagem: 'https://via.placeholder.com/200/ff4081/ffffff?text=Fone+Pink' },
