@@ -1,15 +1,26 @@
-from models.conexaoBanco import *
+def selectBanco(comando_sql, conexao, parametros=()):
+    # Verifica se a conexão com o banco existe.
+    if conexao is None:
+        return None
 
-def selectBanco(comando_sql , conexao ):
+    cursorDB = None
 
-  try:
-    cursorDB = conexao.cursor()
-    cursorDB.execute(comando_sql)
+    try:
+        # Cria o cursor para executar a consulta.
+        cursorDB = conexao.cursor()
 
-    leitor = cursorDB.fetchall()
-    cursorDB.close()
-    return leitor
+        # Executa a consulta com parâmetros, quando existirem.
+        cursorDB.execute(comando_sql, parametros)
 
-  except Exception as e:
-    # cursor.close()
-    print(f"Erro ao executar SELECT: {e}")
+        # Retorna os registros encontrados.
+        leitor = cursorDB.fetchall()
+        return leitor
+
+    except Exception as erro:
+        print(f"Erro ao executar SELECT: {erro}")
+        return None
+
+    finally:
+        # Fecha o cursor mesmo se ocorrer um erro.
+        if cursorDB is not None:
+            cursorDB.close()
