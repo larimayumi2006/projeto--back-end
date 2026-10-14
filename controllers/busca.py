@@ -1,23 +1,26 @@
+
 from models.conexaoBanco import conexaoBanco
 from models.selectBanco import selectBanco
 
 
 def busca(dados):
-    conecxao = conexaoBanco("127.0.0.1", "lojinha", "Larissa", "Larissa.2006")
-  # Verifica se a conexão foi estabelecida
-if conexao is None:
-    return None
+    conec = conexaoBanco(
+        "127.0.0.1",
+        "lojinha",
+        "pinkmercado",
+        "pink123"
+    )
 
-try:
-    # Procura produtos que contenham o texto digitado
-    comando = "SELECT * FROM produtos WHERE Nome LIKE %s"
-    parametros = (f"%{dados}%",)
+    if conec is None:
+        return None
 
-    # Executa a consulta usando parâmetros seguros
-    resultado = selectBanco(comando, conexao, parametros)
+    try:
+        comando = "SELECT * FROM produtos WHERE nome LIKE %s"
+        parametros = (f"%{dados}%",)
 
-    return resultado
+        resultado = selectBanco(comando, conec, parametros)
 
-finally:
-    # Fecha a conexão depois da consulta
-    conexao.close()
+        return resultado
+
+    finally:
+        conec.close()

@@ -22,61 +22,104 @@ document.addEventListener('DOMContentLoaded', () => {
     
 });
 
-// 1. BUSCA OS DADOS DA API (OU DA MOCK)
+// busca os produtos na API
 async function carregarProdutos() {
-    let produtos = [];
+    try {
+        const response = await fetch('/produtos');
 
-    try {//Solicita a lista de prod ao BE
-        const response = await fetch(`${API_URL}/produtos`);
-        if (!response.ok) throw new Error('Servidor off');
-        produtos = await response.json();//converte resposta p JS
-    } catch (erro) {//motiv do erro
-        console.warn('Usando produtos de teste (Mock):', erro);
-        produtos = [
-            { id: 1, nome: 'Fone de Ouvido Bluetooth Pink Gamer', preco: 149.90, imagem: 'https://via.placeholder.com/200/ff4081/ffffff?text=Fone+Pink' },
-            { id: 2, nome: 'Teclado Mecânico RGB Rosa Pastel', preco: 289.00, imagem: 'https://via.placeholder.com/200/ff4081/ffffff?text=Teclado+Rosa' },
-            { id: 3, nome: 'Mousepad Extra Grande Rosa Seco', preco: 69.90, imagem: 'https://via.placeholder.com/200/ff4081/ffffff?text=Mousepad' },
-            { id: 4, nome: 'Cadeira Gamer Ergonomica Rosa', preco: 950.00, imagem: 'https://via.placeholder.com/200/ff4081/ffffff?text=Cadeira+Gamer' }
-        ];
+        if (!response.ok) {
+            throw new Error('Erro ao buscar produtos');
+        }
+
+        tdsprod = await response.json();
+        const imagens = {
+    1: 'https://www.gulfdeals.com/cdn/shop/files/Untitled_design_6_9987fbbd-94e3-4bcf-92a0-4b7de067cc66_1024x.png?v=1730895436',
+    2: 'https://www.oficinadanet.com.br/imagens/obj_item/1909/dell-i3520wadl1010bts.jpg',
+    3: 'https://gbarbosa.vtexassets.com/arquivos/ids/234920/655cac5f3ccb107f03c54b3c.jpg?v=638361690589730000',
+    4: 'https://a-static.mlcdn.com.br/w/600/h/600/monitor-ultrawide-lg-29wl500-b-29-full-hd-ips-led-hdmi-freesync/magazineluiza/232283500/5a00c42906f8f9b8ba4d00672f84a4ba.jpg',
+    5: 'https://redragon.com/cdn/shop/files/RedragonK671104-KeyMechanicalGamingKeyboard.png?v=1751281460&width=1000',
+    6: 'https://resource.logitechg.com/content/dam/gaming/en/products/refreshed-g203/2025-update/g203-mouse-3qtr-high-back-angle-black-gallery-7.png',
+    7: 'https://welaxhome.com/cdn/shop/files/lc5bz_6.webp?v=1779161627&width=1920',
+    8: 'https://mobileimages.lowes.com/productimages/39a55d5f-53f8-4baa-b117-6ef697c99e2e/86368398.jpeg?size=pdhz',
+    9: 'https://uk.hyperx.com/cdn/shop/files/hyperx_cloud_ii_red_1_main.jpg?v=1770037214',
+    10: 'https://down-ph.img.susercontent.com/file/3ee9ab5bb45460480d8599b2748f3804',
+    11: 'https://img.ep-cdn.com/i/500/500/xw/xwrjgqmetzubodcfphik/kingston-1tb-m-2-nvme-snv2s-1000g-ssd-nv2-series-ssd-hard-disk-cene.jpg'
+};
+
+// Adiciona a URL da foto a cada produto
+tdsprod.forEach(produto => {
+    produto.imagem = imagens[produto.id];
+});
+
+// Exibe os produtos com suas fotos
+renderizarProdutos(tdsprod);
+        
+
+    } catch (erro) {
+        console.error('Erro ao carregar produtos:', erro);
     }
-
-    tdsprod = produtos;
-    renderizarProdutos(tdsprod);
 }
 
-// 2. LÊ O 'card-produto.html', SUBSTITUI OS VALORES E EXIBE NA TELA
+ // cards dos produtos na página
 async function renderizarProdutos(listaProdutos) {
+
+    // espaço de exibição
     const grid = document.getElementById('productGrid');
+
+    if (!grid) return;
+
+    // limpeza
     grid.innerHTML = '';
 
     try {
-        // Busca o arquivo HTML da caixa do produto
+        // busca o arquivo modelo
         const responseTemplate = await fetch('/frontE/cards.html');
+
+        if (!responseTemplate.ok) {
+            throw new Error('Não foi possível carregar os cards');
+        }
+
+        // lê o conteúdo do arq HTML como text
         const templateHTML = await responseTemplate.text();
 
-        // Para cada produto, substitui as marcações pelo valor real
+        // percorre a lista para criar um card para cada produto
         listaProdutos.forEach(produto => {
-            const precoFormatado = Number(produto.preco).toLocaleString('pt-BR', {
-                style: 'currency',
-                currency: 'BRL'
-            });
 
-            // Substitui {{IMAGEM}}, {{NOME}} e {{PRECO}} do arquivo card-produto.html
-            let cardHTML = templateHTML
-                .replaceAll('{{IMAGEM}}', produto.imagem || 'https://via.placeholder.com/200')
-                .replaceAll('{{NOME}}', produto.nome)
-                .replaceAll('{{PRECO}}', precoFormatado);
+            // conversão valor
+            const precoFormatado = Number(produto.preco)
+                .toLocaleString('pt-BR', {
+                    style: 'currency',
+                    currency: 'BRL'
+                });
 
-            // Injeta o HTML gerado dentro do #productGrid
+            
+            const cardHTML = templateHTML
+               .replaceAll(
+                    '{{IMAGEM}}',
+                    produto.imagem || (
+                        'https://placehold.co/300x200/ffb6d9/ffffff?text=' +
+                         encodeURIComponent(produto.nome)
+    )
+)
+                .replaceAll('{{NOME}}', produto.nome) 
+                .replaceAll('{{PRECO}}', precoFormatado); 
+
+            // add o card na area de prodoptos da pagina
             grid.insertAdjacentHTML('beforeend', cardHTML);
         });
 
+        if (listaProdutos.length === 0) {
+            grid.textContent = 'Nenhum produto encontrado.';
+        }
+
     } catch (erro) {
-        console.error('Erro ao carregar o arquivo card-produto.html:', erro);
+        console.error('Erro ao carregar os cards:', erro);
+
+        grid.textContent = 'Não foi possível exibir os produtos.';
     }
 }
 
-// 3. CARRINHO
+// 2 CARRINHO
 function adicionarAoCarrinho(nomeProduto) {
     carrinho.push(nomeProduto);
     document.getElementById('cartCount').innerText = carrinho.length;

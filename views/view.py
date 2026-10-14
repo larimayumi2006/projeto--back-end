@@ -39,3 +39,24 @@ def pesquisar():
         return {"erro": "Não foi possivel consultar os produtos"}, 500
 #produtos encontardos
     return{"resultado": resultado}
+
+
+@bpView.route('/produtos', methods=['GET'])
+def listar_produtos():
+    resultado = busca("")
+
+    if resultado is None:
+        return {"erro": "Não foi possível consultar os produtos"}, 500
+
+    produtos = []
+
+    for produto in resultado:
+        produtos.append({
+            "id": produto[0],
+            "nome": produto[1],
+            "preco": float(produto[2]),
+            "avaliacao": produto[3],
+            "categoria": produto[4]
+        })
+
+    return produtos
