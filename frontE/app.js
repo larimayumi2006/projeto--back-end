@@ -1,4 +1,4 @@
-const API_URL = 'http://127.0.0.1:5000';
+const API_URL = ''; //Deixar a URL vazia faz o JavaScript usar o mesmo endereço da página
 let carrinho = [];
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -33,7 +33,7 @@ async function renderizarProdutos(listaProdutos) {
 
     try {
         // Busca o arquivo HTML da caixa do produto
-        const responseTemplate = await fetch('card-produto.html');
+        const responseTemplate = await fetch('/frontE/cards.html');
         const templateHTML = await responseTemplate.text();
 
         // Para cada produto, substitui as marcações pelo valor real
