@@ -1,5 +1,5 @@
 from pathlib import Path # Mais facil de loc as pastas e arqvs'
-from flask import Flask , render_template , Blueprint , request, send_from_directory
+from flask import Blueprint , request, send_from_directory
 from controllers.busca import busca
 
 
@@ -20,11 +20,12 @@ def home():
 def arquivos_fronte(filename):
     return send_from_directory(front_d, filename)
 
-
+#rota de teste 
 @bpView.route('/botao', methods=['GET'])
 def botao():
     return {'message':'botao'}
-
+    
+#rota pesquisa
 @bpView.route('/pesquisar', methods=['POST'])
 def pesquisar():
     dados_input = request.form.get('nome_Produto', '').strip() #remove espaços extras no inicio e fim
@@ -36,5 +37,5 @@ def pesquisar():
 
     if resultado is None:
         return {"erro": "Não foi possivel consultar os produtos"}, 500
-
+#produtos encontardos
     return{"resultado": resultado}
