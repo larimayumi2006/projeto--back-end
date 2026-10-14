@@ -1,8 +1,25 @@
 const API_URL = ''; //Deixar a URL vazia faz o JavaScript usar o mesmo endereço da página
 let carrinho = [];
 
+let tdsprod = []
+
 document.addEventListener('DOMContentLoaded', () => {
     carregarProdutos();
+//Loc Fomulario e campo de pesquisa
+    const searchForm = document.getElementById('searchForm')
+    const searchInput = document.getElementById('searchInput')
+    
+    if (searchForm && searchInput) {
+        searchForm.addEventListener('submit',(evento) => {
+            evento.preventDefault();//ass o form n recarrega a pagina
+            //filtro por nome
+            const termo = searchInput.value.trim().toLocaleLowerCase('pt-BR')
+            const prodFil = tdsprod.filter(prod => String(prod.nome || '')
+                .toLocaleLowerCase('pt-BR').includes(termo));
+            renderizarProdutos(prodFil);
+        });
+    }
+    
 });
 
 // 1. BUSCA OS DADOS DA API (OU DA MOCK)
@@ -23,7 +40,8 @@ async function carregarProdutos() {
         ];
     }
 
-    renderizarProdutos(produtos);
+    tdsprod = produtos;
+    renderizarProdutos(tdsprod);
 }
 
 // 2. LÊ O 'card-produto.html', SUBSTITUI OS VALORES E EXIBE NA TELA
