@@ -1,25 +1,48 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=
-    , initial-scale=1.0">
-    <title>Document</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PinkMercado - Seu E-commerce Rosa</title>
+    <link rel="stylesheet"
+      href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
-    <h1>Titulo</h1>
-    <button>botão</button>
-    <div style=" background-color: brown;padding:20px"></div>
 
-    <form action="/pesquisar" method="POST">
-        <label for="nomeProduto">Pesquisar Produto</label>
-        
-        <!-- O atributo NAME é obrigatório para o Flask identificar este input -->
-        <input type="text" id="nomeProduto" name="nome_Produto">
-        
-        <button type="submit">Enviar</button>
-    </form>
+    <!-- CABEÇALHO -->
+    <header class="header">
+        <div class="header-container">
+            <h1 class="logo">Compra<span>Rosa</span></h1>
+            
+            <form class="search-form" id="searchForm">
+                <input type="text" id="searchInput" placeholder="Buscar produtos, marcas e muito mais...">
+                <button type="submit">🔍</button>
+            </form>
 
-    <script src='static/js/main.js'></script>
+            <div class="cart-icon" id="cartButton">
+                🛒 <span id="cartCount">0</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- BANNER PROMOCIONAL -->
+    <section class="banner">
+        <h2>Ofertas Imperdíveis em Tons de Rosa! 💖</h2>
+    </section>
+
+    <!-- ÁREA PRINCIPAL -->
+    <main class="container">
+        <h2>Destaques para você</h2>
+        
+        <!-- O JavaScript vai injetar os 'card-produto.html' AQUI dentro -->
+        <div class="product-grid" id="productGrid"></div>
+    </main>
+
+    <!-- RODAPÉ -->
+    <footer>
+        <p>&copy; 2026 PinkMercado - Todos os direitos reservados.</p>
+    </footer>
+
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
 </body>
 </html>
